@@ -3,8 +3,7 @@ package bsu.rfe.java.group10.lab3.Charnetsky.varC3;
 import javax.swing.table.AbstractTableModel;
 
 @SuppressWarnings("serial")
-//пока что сделал горненртаблмод абстрактным
-public abstract class GornerTableModel extends AbstractTableModel {
+public class GornerTableModel extends AbstractTableModel {
 
     private Double[] coefficients;
     private Double from;

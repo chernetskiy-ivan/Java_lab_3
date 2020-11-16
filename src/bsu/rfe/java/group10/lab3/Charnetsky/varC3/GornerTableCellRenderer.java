@@ -20,7 +20,7 @@ public class GornerTableCellRenderer implements TableCellRenderer {
 
     private DecimalFormat formatter= (DecimalFormat) NumberFormat.getInstance();
 
-    private GornerTableCellRenderer(){
+    public GornerTableCellRenderer(){
         //Показывать только 5 знаков после запятой
         formatter.setMaximumFractionDigits(5);
         // Не использовать группировку (т.е. не отделять тысячи
