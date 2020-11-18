@@ -30,8 +30,8 @@ public class GornerTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount(){
-        //в данной модели 2 столбца
-        return 2;
+        //в данной модели 4 столбца
+        return 4;
     }
 
     public int getRowCount(){
@@ -46,7 +46,8 @@ public class GornerTableModel extends AbstractTableModel {
         if(col == 0) {
             // Если запрашивается значение 1-го столбца, то это X
             return x;
-        } else{
+        }
+        else if(col == 1){
             // Если запрашивается значение 2-го столбца, то это значение многочлена
             // Вычисление значения в точке по схеме Горнера.
             Double result = coefficients[coefficients.length - 1];
@@ -60,6 +61,23 @@ public class GornerTableModel extends AbstractTableModel {
             result += chlen;
             return result;
         }
+        else if(col == 2){
+            Float result = (float) (double)coefficients[coefficients.length-1];
+            Float slag;
+            Float chlen = 0f;
+            for(int i = 0 ; i < coefficients.length - 1; i++){
+                slag = chlen + (float) (double)coefficients[i];
+                chlen = slag * (float)x;
+            }
+            result += chlen;
+            return result;
+        }
+        else if(col == 3)
+        {
+            Double difference = (double)getValueAt(row,1) - (double) (float)getValueAt(row,2);
+            return difference;
+        }
+        return null;
     }
 
     public String getColumnName(int col){
@@ -67,15 +85,22 @@ public class GornerTableModel extends AbstractTableModel {
             case 0:
                 //Значение первого столбца
                 return "Значение X";
+            case 1:
+                return "Значение многочлена(Double)";
+            case 2:
+                return "Значение многочлена(Float)";
             default:
-                //Значение второго столбца
-                return "Значение многочлена";
+                return "Разница значений";
         }
     }
 
     public Class<?> getColumnClass(int col){
-        //И в первом и во втором столбце значения типа Double
-        return Double.class;
+        switch(col) {
+            case 2:
+                return Float.class;
+            default:
+                return Double.class;
+        }
     }
 
 }
