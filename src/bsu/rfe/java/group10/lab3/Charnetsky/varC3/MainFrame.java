@@ -11,22 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
@@ -48,6 +33,7 @@ public class MainFrame extends JFrame {
     private JMenuItem saveToTextMenuItem;
     private JMenuItem saveToGraphicsMenuItem;
     private JMenuItem searchValueMenuItem;
+    private JMenuItem aboutAuthorMenu;
 
 
     // Поля ввода для считывания значений переменных
@@ -57,6 +43,8 @@ public class MainFrame extends JFrame {
 
 
     private Box hboxResult;
+
+    private Icon ME = new ImageIcon("E:\\Java\\Java_lab_3\\ME\\ME.jpg");
 
 
     //Визуализатор ячеек таблицы
@@ -90,6 +78,9 @@ public class MainFrame extends JFrame {
         //Создать пункт меню "Таблица"
         JMenu tableMenu = new JMenu("Таблица");
         menuBar.add(tableMenu);
+        //Создаю пунтк меню "Справка"
+        JMenu referenceMenu = new JMenu("Справка");
+        menuBar.add(referenceMenu);
 
         // Создать новое "действие" по сохранению в текстовый файл
         Action saveToTextAction = new AbstractAction("Сохранить в текстовый файл") {
@@ -154,6 +145,15 @@ public class MainFrame extends JFrame {
         searchValueMenuItem = tableMenu.add(searchValueAction);
         // По умолчанию пункт меню является недоступным (данных ещѐ нет)
         searchValueMenuItem.setEnabled(false);
+
+        //Создать действие принажатии на "Справка"
+        Action referenceAction = new AbstractAction("о программе") {
+            public void actionPerformed(ActionEvent event) {
+                JOptionPane.showMessageDialog(MainFrame.this, "Чернецкий\nИван\nРоманович\n\n\n Группа:\t10\n","О программе", JOptionPane.DEFAULT_OPTION, ME);
+            }
+        };
+        aboutAuthorMenu = referenceMenu.add(referenceAction);
+        aboutAuthorMenu.setEnabled(true);
 
         // Создать область с полями ввода для границ отрезка и шага
         // Создать подпись для ввода левой границы отрезка
