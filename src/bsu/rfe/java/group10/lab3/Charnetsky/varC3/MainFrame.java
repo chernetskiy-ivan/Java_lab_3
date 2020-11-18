@@ -63,7 +63,7 @@ public class MainFrame extends JFrame {
     private GornerTableCellRenderer renderer = new GornerTableCellRenderer();
 
 
-    //Модель данных с результатом вычмслений
+    //Модель данных с результатом вычислений
     private GornerTableModel data;
 
 
@@ -77,13 +77,13 @@ public class MainFrame extends JFrame {
         setSize(WIDTH,HEIGHT);
         Toolkit kit = Toolkit.getDefaultToolkit();
         // Отцентрировать окно приложения на экране
-        setLocation((kit.getScreenSize().width - WIDTH)/2, (kit.getScreenSize().height - HEIGHT));
+        setLocation((kit.getScreenSize().width - WIDTH)/2, (kit.getScreenSize().height - HEIGHT)/2);
 
         //Создать меню
         JMenuBar menuBar = new JMenuBar();
-        //установить меню в качестве главного меня приложения
+        //установить меню в качестве главного меню приложения
         setJMenuBar(menuBar);
-        //Добавить в меню пункт в меню "Файл"
+        //Добавить в меню пункт "Файл"
         JMenu fileMenu = new JMenu("Файл");
         // Добавить его в главное меню
         menuBar.add(fileMenu);
@@ -116,7 +116,7 @@ public class MainFrame extends JFrame {
         // Создать новое "действие" по сохранению в текстовый файл
         Action saveToGraphicsAction = new AbstractAction("Сохранить данные для построения графика") {
             public void actionPerformed(ActionEvent event) {
-                if(fileChooser==null) {
+                if(fileChooser == null) {
                     // Еслиэкземплярдиалоговогоокна
                     // "Открыть файл" ещѐ не создан,
                     // то создать его
@@ -238,7 +238,7 @@ public class MainFrame extends JFrame {
                     table.setRowHeight(30);
                     // Удалить все вложенные элементы из контейнера hBoxResult
                     hboxResult.removeAll();
-                    // Добавить в hBoxResult таблицу, "обѐрнутую" в панель с полосами прокрутки
+                    // Добавить в hBoxResult таблицу, "обёрнутую" в панель с полосами прокрутки
                     hboxResult.add(new JScrollPane(table));
                     // Обновить область содержания главного окна
                     getContentPane().validate();
@@ -249,16 +249,13 @@ public class MainFrame extends JFrame {
 
                 } catch (NumberFormatException ex) {
                     // В случае ошибки преобразования чисел показать сообщение об ошибке
-                    JOptionPane.showMessageDialog(MainFrame.this,
-                            "Ошибка в формате записи числа с плавающей точкой", "Ошибочный формат числа",
-                            JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(MainFrame.this, "Ошибка в формате записи числа с плавающей точкой", "Ошибочный формат числа", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
         // Создать кнопку "Очистить поля"
         JButton buttonReset = new JButton("Очистить поля");
         // Задать действие на нажатие "Очистить поля" и привязать к кнопке
-
         buttonReset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 // Установить в полях ввода значения по умолчанию
@@ -304,7 +301,7 @@ public class MainFrame extends JFrame {
             // Создать новый байтовый поток вывода, направленный в указанный файл
             DataOutputStream out = new DataOutputStream(new  FileOutputStream(selectedFile));
             // Записать в поток вывода попарно значение X в точке, значение многочлена в точке
-            for (int i = 0; i<data.getRowCount(); i++) {
+            for (int i = 0; i < data.getRowCount(); i++) {
                 out.writeDouble((Double)data.getValueAt(i,0));
                 out.writeDouble((Double)data.getValueAt(i,1));
             }
@@ -315,7 +312,6 @@ public class MainFrame extends JFrame {
             // так как мы файл создаѐм, а не открываем для чтения
         }
     }
-
 
 
     protected void saveToTextFile(File selectedFile){
