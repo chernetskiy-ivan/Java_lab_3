@@ -161,7 +161,7 @@ public class MainFrame extends JFrame {
         Action actionFindPolindrom = new AbstractAction("Погнали") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                renderer.searchPolindrom(true);
+                renderer.setSearchPolindrom(true);
                 getContentPane().repaint();
             }
         };
@@ -257,6 +257,7 @@ public class MainFrame extends JFrame {
                     // Обновить область содержания главного окна
                     getContentPane().validate();
                     // Пометить ряд элементов меню как доступных
+                    renderer.setSearchPolindrom(false);
                     saveToTextMenuItem.setEnabled(true);
                     saveToGraphicsMenuItem.setEnabled(true);
                     searchValueMenuItem.setEnabled(true);
@@ -286,6 +287,7 @@ public class MainFrame extends JFrame {
                 saveToGraphicsMenuItem.setEnabled(false);
                 searchValueMenuItem.setEnabled(false);
                 findPolindrom.setEnabled(false);
+                renderer.setSearchPolindrom(false);
                 // Обновить область содержания главного окна
                 getContentPane().validate();
             }

@@ -17,6 +17,7 @@ public class GornerTableCellRenderer implements TableCellRenderer {
     // стога сена - таблица
 
     private String needle = null;
+    private boolean searchPolindrom;
 
     private DecimalFormat formatter= (DecimalFormat) NumberFormat.getInstance();
     private DecimalFormat formatterFloat = (DecimalFormat) NumberFormat.getInstance();
@@ -63,6 +64,12 @@ public class GornerTableCellRenderer implements TableCellRenderer {
             //Иначе в обычный белый
             panel.setBackground(Color.WHITE);
         }
+        if(searchPolindrom){
+            if(polindrom(value))
+                panel.setBackground(Color.RED);
+            else
+                panel.setBackground(Color.WHITE);
+        }
         return panel;
     }
 
@@ -70,7 +77,43 @@ public class GornerTableCellRenderer implements TableCellRenderer {
         this.needle = needle;
     }
 
-    public void searchPolindrom(boolean flag){
-        //заглушка для проверки работы в окне
+    private static boolean polindrom(Object value)
+    {
+        String currValueString;
+        Double valueDouble = 0d;
+        //Форматируем в нужный формат: Double или Float
+        if(Double.class.equals(value.getClass()))
+            valueDouble = (Double) value;
+        else if(Float.class.equals(value.getClass()))
+            valueDouble = (double) (float) value;
+
+        valueDouble *= 10;
+        if(valueDouble % 10 == 0)
+        {
+            valueDouble /= 10;
+            Integer valueInt = (int) (double)valueDouble;
+            currValueString = valueInt.toString();
+        }
+        else
+        {
+            valueDouble /= 10;
+            currValueString = valueDouble.toString();
+        }
+        // System.out.println(currValueString);
+        currValueString = currValueString.replace(".", "");
+        //System.out.println(currValueString);
+        StringBuffer revValueBuffer = new StringBuffer(currValueString);
+        revValueBuffer = revValueBuffer.reverse();
+        String revValueString = revValueBuffer.toString();
+
+        //Проверка на палиндромность
+        if (revValueString.equals(currValueString))
+            return true;
+        else
+            return false;
+    }
+
+    public void setSearchPolindrom(boolean searchPolindrom) {
+        this.searchPolindrom = searchPolindrom;
     }
 }
