@@ -34,6 +34,7 @@ public class MainFrame extends JFrame {
     private JMenuItem saveToGraphicsMenuItem;
     private JMenuItem searchValueMenuItem;
     private JMenuItem aboutAuthorMenu;
+    private JMenuItem findPolindrom;
 
 
     // Поля ввода для считывания значений переменных
@@ -81,6 +82,8 @@ public class MainFrame extends JFrame {
         //Создаю пунтк меню "Справка"
         JMenu referenceMenu = new JMenu("Справка");
         menuBar.add(referenceMenu);
+        JMenu polindrom = new JMenu("Найти полиндромы");
+        menuBar.add(polindrom);
 
         // Создать новое "действие" по сохранению в текстовый файл
         Action saveToTextAction = new AbstractAction("Сохранить в текстовый файл") {
@@ -154,6 +157,16 @@ public class MainFrame extends JFrame {
         };
         aboutAuthorMenu = referenceMenu.add(referenceAction);
         aboutAuthorMenu.setEnabled(true);
+
+        Action actionFindPolindrom = new AbstractAction("Погнали") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                renderer.searchPolindrom(true);
+                getContentPane().repaint();
+            }
+        };
+        findPolindrom = polindrom.add(actionFindPolindrom);
+        findPolindrom.setEnabled(false);
 
         // Создать область с полями ввода для границ отрезка и шага
         // Создать подпись для ввода левой границы отрезка
@@ -234,6 +247,7 @@ public class MainFrame extends JFrame {
                     JTable table = new JTable(data);
                     // Установить в качестве визуализатора ячеек для класса Double разработанный визуализатор
                     table.setDefaultRenderer(Double.class, renderer);
+                    table.getColumn("Значение многочлена(Float)").setCellRenderer(renderer);
                     // Установить размер строки таблицы в 30 пикселов
                     table.setRowHeight(30);
                     // Удалить все вложенные элементы из контейнера hBoxResult
@@ -246,6 +260,7 @@ public class MainFrame extends JFrame {
                     saveToTextMenuItem.setEnabled(true);
                     saveToGraphicsMenuItem.setEnabled(true);
                     searchValueMenuItem.setEnabled(true);
+                    findPolindrom.setEnabled(true);
 
                 } catch (NumberFormatException ex) {
                     // В случае ошибки преобразования чисел показать сообщение об ошибке
@@ -270,6 +285,7 @@ public class MainFrame extends JFrame {
                 saveToTextMenuItem.setEnabled(false);
                 saveToGraphicsMenuItem.setEnabled(false);
                 searchValueMenuItem.setEnabled(false);
+                findPolindrom.setEnabled(false);
                 // Обновить область содержания главного окна
                 getContentPane().validate();
             }
@@ -315,17 +331,18 @@ public class MainFrame extends JFrame {
 
 
     protected void saveToTextFile(File selectedFile){
-        try{
+        try {
             // Создать новый символьный поток вывода, направленный в указанный файл
             PrintStream out = new PrintStream(selectedFile);
             // Записать в поток вывода заголовочные сведения
             out.println("Результаты табулирования по схеме Горнера");
             out.println("Многочлен: ");
-            for(int i = 0; i < coefficients.length; i++){
-                out.print(coefficients[i] + "*x^" + (coefficients.length-i-1));
-                if(i != coefficients.length-1){
+            for(int i = 0; i < coefficients.length; i++) {
+                out.print(coefficients[i] + "*x^" + (coefficients.length - i - 1));
+                if (i != coefficients.length - 1) {
                     out.print(" + ");
                 }
+            }
                 out.println("");
                 out.println("Интервал от " + data.getFrom() + " до " + data.getTo() + " с шагом " + data.getStep());
                 out.println("====================================================");
@@ -334,7 +351,6 @@ public class MainFrame extends JFrame {
                     out.println("Значение в точке "+ data.getValueAt(j,0) + " равно "+ data.getValueAt(j,1));}
                 // Закрыть поток
                 out.close();
-            }
         } catch(Exception e) {
             // Исключительную ситуацию "ФайлНеНайден" можно не
             // обрабатывать,так как мы файл создаѐм, а не открываем

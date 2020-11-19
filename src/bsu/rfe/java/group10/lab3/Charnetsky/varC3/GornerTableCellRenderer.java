@@ -19,10 +19,11 @@ public class GornerTableCellRenderer implements TableCellRenderer {
     private String needle = null;
 
     private DecimalFormat formatter= (DecimalFormat) NumberFormat.getInstance();
+    private DecimalFormat formatterFloat = (DecimalFormat) NumberFormat.getInstance();
 
     public GornerTableCellRenderer(){
-        //Показывать только 5 знаков после запятой
-        formatter.setMaximumFractionDigits(5);
+        //Показывать только 8 знаков после запятой
+        formatter.setMaximumFractionDigits(8);
         // Не использовать группировку (т.е. не отделять тысячи
         // ни запятыми, ни пробелами), т.е. показывать число как "1000",
         // ане"1 000" или"1,000"
@@ -37,8 +38,16 @@ public class GornerTableCellRenderer implements TableCellRenderer {
         panel.add(label);
         //Установить выравнивание надписи по левому краю
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
-    }
 
+//        formatterFloat.setMaximumFractionDigits(8);
+//        formatterFloat.setGroupingUsed(false);
+//        DecimalFormatSymbols dottedFloat = formatterFloat.getDecimalFormatSymbols();
+//        dottedFloat.setDecimalSeparator('.');
+//        formatterFloat.setDecimalFormatSymbols(dottedFloat);
+//        panel.add(label);
+//        panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+    }
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col){
         // Преобразовать double в строку с помощью форматировщика
         String formatterDouble = formatter.format(value);
@@ -61,4 +70,7 @@ public class GornerTableCellRenderer implements TableCellRenderer {
         this.needle = needle;
     }
 
+    public void searchPolindrom(boolean flag){
+        //заглушка для проверки работы в окне
+    }
 }
