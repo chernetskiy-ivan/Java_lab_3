@@ -12,6 +12,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import javax.swing.*;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
@@ -32,6 +35,7 @@ public class MainFrame extends JFrame {
     // манипулировать из разных мест
     private JMenuItem saveToTextMenuItem;
     private JMenuItem saveToGraphicsMenuItem;
+    private JMenuItem saveToCSVMenuItem;
     private JMenuItem searchValueMenuItem;
     private JMenuItem aboutAuthorMenu;
     private JMenuItem findPolindrom;
@@ -119,7 +123,7 @@ public class MainFrame extends JFrame {
                     fileChooser.setCurrentDirectory(new File("."));
                 }
                 // Показать диалоговое окно
-                if(fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION);{
+                if(fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION){
                     // Если результат его показа успешный,
                     // сохранить данные в двоичный файл
                     saveToGraphicsFile(fileChooser.getSelectedFile());
@@ -128,6 +132,21 @@ public class MainFrame extends JFrame {
         // Добавить соответствующий пункт подменю в меню "Файл
         saveToGraphicsMenuItem = fileMenu.add(saveToGraphicsAction);
         // По умолчанию пункт менюя вляется недоступным(данных ещѐ нет)
+        saveToGraphicsMenuItem.setEnabled(false);
+
+        Action saveCSVAction = new AbstractAction("Сохранить результаты в CSV-файл") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(fileChooser == null){
+                    fileChooser = new JFileChooser();
+                    fileChooser.setCurrentDirectory(new File("."));
+                }
+                if(fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION){
+                    saveToCSVFile(fileChooser.getSelectedFile());
+                }
+            }
+        };
+        saveToCSVMenuItem = fileMenu.add(saveCSVAction);
         saveToGraphicsMenuItem.setEnabled(false);
 
         // Создать новое действие по поиску значений многочлена
@@ -150,7 +169,7 @@ public class MainFrame extends JFrame {
         searchValueMenuItem.setEnabled(false);
 
         //Создать действие принажатии на "Справка"
-        Action referenceAction = new AbstractAction("о программе") {
+        Action referenceAction = new AbstractAction("О программе") {
             public void actionPerformed(ActionEvent event) {
                 JOptionPane.showMessageDialog(MainFrame.this, "Чернецкий\nИван\nРоманович\n\n\n Группа:\t10\n","О программе", JOptionPane.DEFAULT_OPTION, ME);
             }
@@ -259,6 +278,7 @@ public class MainFrame extends JFrame {
                     // Пометить ряд элементов меню как доступных
                     renderer.setSearchPolindrom(false);
                     saveToTextMenuItem.setEnabled(true);
+                    saveToCSVMenuItem.setEnabled(true);
                     saveToGraphicsMenuItem.setEnabled(true);
                     searchValueMenuItem.setEnabled(true);
                     findPolindrom.setEnabled(true);
@@ -288,6 +308,7 @@ public class MainFrame extends JFrame {
                 searchValueMenuItem.setEnabled(false);
                 findPolindrom.setEnabled(false);
                 renderer.setSearchPolindrom(false);
+                saveToCSVMenuItem.setEnabled(false);
                 // Обновить область содержания главного окна
                 getContentPane().validate();
             }
@@ -356,6 +377,37 @@ public class MainFrame extends JFrame {
         } catch(Exception e) {
             // Исключительную ситуацию "ФайлНеНайден" можно не
             // обрабатывать,так как мы файл создаѐм, а не открываем
+        }
+    }
+
+    private void saveToCSVFile(File selectedFile) {
+        try {
+            DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance();
+            formatter.setMaximumFractionDigits(8);
+            formatter.setGroupingUsed(false);
+
+            DecimalFormatSymbols dottedDouble = formatter.getDecimalFormatSymbols();
+            dottedDouble.setDecimalSeparator('.');
+            formatter.setDecimalFormatSymbols(dottedDouble);
+            // Создать новый символьный поток вывода, направленный в указанный файл
+            PrintStream out = new PrintStream(selectedFile);
+            for (int i = 0; i < data.getRowCount(); i++)
+            {
+                for (int j = 0; j < data.getColumnCount();j++)
+                {
+                    out.print(formatter.format(data.getValueAt(i, j)));
+                    if(j != data.getColumnCount() - 1)
+                    {
+                        out.print(", ");
+                    }
+                }
+                out.println("");
+            }
+            // Закрыть поток
+            out.close();
+        }
+        catch (FileNotFoundException e)
+        {
         }
     }
 }

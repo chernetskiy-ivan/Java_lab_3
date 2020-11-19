@@ -18,6 +18,7 @@ public class GornerTableCellRenderer implements TableCellRenderer {
 
     private String needle = null;
     private boolean searchPolindrom;
+    private JCheckBox checkBox;
 
     private DecimalFormat formatter= (DecimalFormat) NumberFormat.getInstance();
     private DecimalFormat formatterFloat = (DecimalFormat) NumberFormat.getInstance();
@@ -40,31 +41,48 @@ public class GornerTableCellRenderer implements TableCellRenderer {
         //Установить выравнивание надписи по левому краю
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-//        formatterFloat.setMaximumFractionDigits(8);
-//        formatterFloat.setGroupingUsed(false);
-//        DecimalFormatSymbols dottedFloat = formatterFloat.getDecimalFormatSymbols();
-//        dottedFloat.setDecimalSeparator('.');
-//        formatterFloat.setDecimalFormatSymbols(dottedFloat);
-//        panel.add(label);
-//        panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        formatterFloat.setMaximumFractionDigits(8);
+        formatterFloat.setGroupingUsed(false);
+        DecimalFormatSymbols dottedFloat = formatterFloat.getDecimalFormatSymbols();
+        dottedFloat.setDecimalSeparator('.');
+        formatterFloat.setDecimalFormatSymbols(dottedFloat);
+        panel.add(label);
+        panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        checkBox = new JCheckBox("check", true);
+        checkBox.setLocation(0, 0);
+        checkBox.setSize(checkBox.getMaximumSize());
 
     }
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col){
-        // Преобразовать double в строку с помощью форматировщика
-        String formatterDouble = formatter.format(value);
-        // Установить текст надписи равным строковому представлению числа
-        label.setText(formatterDouble);
-        if(col==1 && needle!=null && needle.equals(formatterDouble)){
-            // Номер столбца = 1 (т.е. второй столбец) + иголка не null
-            // (значит что-то ищем) +
-            // значение иголки совпадает со значением ячейки таблицы -
-            // окрасить задний фон панели в красный цвет
-            panel.setBackground(Color.RED);
-        } else{
-            //Иначе в обычный белый
-            panel.setBackground(Color.WHITE);
+        if(col!=2) {
+            // Преобразовать число в строку с помощью форматировщика
+            String formattedDouble = formatter.format(value);
+            // Установить текст надписи равным строковому представлению числа
+            label.setText(formattedDouble);
+            if (col == 1 && needle != null && needle.equals((formattedDouble))) {
+                // Номер столбца = 1 (т.е. второй столбец)
+                // + иголка не null (т.е. мы что-то ищем)
+                // + значение иголки совпадает со значением ячейки таблицы -
+                // удалить все элементы в панели и вставаить ЧекБокс (флажок)
+                panel.removeAll();
+                panel.add(checkBox);
+            } else {
+                panel.removeAll();
+                panel.add(label);
+                //panel.setBackground(Color.WHITE);
+            }
         }
-        if(searchPolindrom){
+        else
+        {
+            String formattedFloat = formatterFloat.format(value);
+            label.setText(formattedFloat);
+            panel.setBackground(Color.WHITE);
+            panel.removeAll();
+            panel.add(label);
+        }
+        if (searchPolindrom)
+        {
             if(polindrom(value))
                 panel.setBackground(Color.RED);
             else

@@ -86,7 +86,7 @@ public class GornerTableModel extends AbstractTableModel {
                 //Значение первого столбца
                 return "Значение X";
             case 1:
-                return "Значение многочлена(Double)";
+                return "Значение многочлена";
             case 2:
                 return "Значение многочлена(Float)";
             default:
