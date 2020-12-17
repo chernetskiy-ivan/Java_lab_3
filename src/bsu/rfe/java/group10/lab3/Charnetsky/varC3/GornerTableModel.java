@@ -37,7 +37,7 @@ public class GornerTableModel extends AbstractTableModel {
     public int getRowCount(){
         // Вычислить количество точек между началом и концом отрезка
         // исходя из шага табулирования
-        return  new Double(Math.ceil((to - from)/step)).intValue() + 1;  //Вопрос: что за new ?
+        return  new Double(Math.ceil((to - from)/step)).intValue() + 1;
     }
 
     public Object getValueAt(int row, int col){
@@ -52,24 +52,24 @@ public class GornerTableModel extends AbstractTableModel {
             // Вычисление значения в точке по схеме Горнера.
             Double result = coefficients[coefficients.length - 1];
             Double slag;
-            Double chlen = 0.0;
+            Double member = 0.0;
             for (int i = 0; i < coefficients.length - 1; i++)
             {
-                slag = chlen + coefficients[i];
-                chlen = slag * x;
+                slag = member + coefficients[i];
+                member = slag * x;
             }
-            result += chlen;
+            result += member;
             return result;
         }
         else if(col == 2){
             Float result = (float) (double)coefficients[coefficients.length-1];
             Float slag;
-            Float chlen = 0f;
+            Float member = 0f;
             for(int i = 0 ; i < coefficients.length - 1; i++){
-                slag = chlen + (float) (double)coefficients[i];
-                chlen = slag * (float)x;
+                slag = member + (float) (double)coefficients[i];
+                member = slag * (float)x;
             }
-            result += chlen;
+            result += member;
             return result;
         }
         else if(col == 3)

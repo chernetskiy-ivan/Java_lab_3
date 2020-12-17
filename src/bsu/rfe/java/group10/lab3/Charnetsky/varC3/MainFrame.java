@@ -147,7 +147,7 @@ public class MainFrame extends JFrame {
             }
         };
         saveToCSVMenuItem = fileMenu.add(saveCSVAction);
-        saveToGraphicsMenuItem.setEnabled(false);
+        saveToCSVMenuItem.setEnabled(false);
 
         // Создать новое действие по поиску значений многочлена
         Action searchValueAction = new AbstractAction("Найти значение многочлена") {

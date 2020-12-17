@@ -68,9 +68,10 @@ public class GornerTableCellRenderer implements TableCellRenderer {
                 panel.removeAll();
                 panel.add(checkBox);
             } else {
+                //зачем ?
                 panel.removeAll();
                 panel.add(label);
-                //panel.setBackground(Color.WHITE);
+                panel.setBackground(Color.WHITE);
             }
         }
         else
@@ -98,7 +99,7 @@ public class GornerTableCellRenderer implements TableCellRenderer {
     private static boolean polindrom(Object value)
     {
         String currValueString;
-        Double valueDouble = 0d;
+        Double valueDouble = 0.0;
         //Форматируем в нужный формат: Double или Float
         if(Double.class.equals(value.getClass()))
             valueDouble = (Double) value;
