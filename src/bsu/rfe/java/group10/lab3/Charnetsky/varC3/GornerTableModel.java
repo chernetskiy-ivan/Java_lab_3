@@ -3,8 +3,7 @@ package bsu.rfe.java.group10.lab3.Charnetsky.varC3;
 import javax.swing.table.AbstractTableModel;
 
 @SuppressWarnings("serial")
-//пока что сделал горненртаблмод абстрактным
-public abstract class GornerTableModel extends AbstractTableModel {
+public class GornerTableModel extends AbstractTableModel {
 
     private Double[] coefficients;
     private Double from;
@@ -31,30 +30,54 @@ public abstract class GornerTableModel extends AbstractTableModel {
     }
 
     public int getColumnCount(){
-        //в данной модели 2 столбца
-        return 2;
+        //в данной модели 4 столбца
+        return 4;
     }
 
     public int getRowCount(){
         // Вычислить количество точек между началом и концом отрезка
         // исходя из шага табулирования
-        return  new Double(Math.ceil((to - from)/step)).intValue()+1;  //Вопрос: что за new ?
+        return  new Double(Math.ceil((to - from)/step)).intValue() + 1;
     }
 
     public Object getValueAt(int row, int col){
         // вычислить значение X как НАЧАЛО_ОТРЕЗКА + ШАГ*НОМЕР_СТРОКИ
-        double x = from + step*row;
-        if(col==0) {
+        double x = from + step * row;
+        if(col == 0) {
             // Если запрашивается значение 1-го столбца, то это X
             return x;
-        } else{
+        }
+        else if(col == 1){
             // Если запрашивается значение 2-го столбца, то это значение многочлена
-            Double result = 0.0;
             // Вычисление значения в точке по схеме Горнера.
-            // Вспомнить 1-ый курс и реализовать
-            // ...
+            Double result = coefficients[coefficients.length - 1];
+            Double slag;
+            Double member = 0.0;
+            for (int i = 0; i < coefficients.length - 1; i++)
+            {
+                slag = member + coefficients[i];
+                member = slag * x;
+            }
+            result += member;
             return result;
         }
+        else if(col == 2){
+            Float result = (float) (double)coefficients[coefficients.length-1];
+            Float slag;
+            Float member = 0f;
+            for(int i = 0 ; i < coefficients.length - 1; i++){
+                slag = member + (float) (double)coefficients[i];
+                member = slag * (float)x;
+            }
+            result += member;
+            return result;
+        }
+        else if(col == 3)
+        {
+            Double difference = (double)getValueAt(row,1) - (double) (float)getValueAt(row,2);
+            return difference;
+        }
+        return null;
     }
 
     public String getColumnName(int col){
@@ -62,15 +85,22 @@ public abstract class GornerTableModel extends AbstractTableModel {
             case 0:
                 //Значение первого столбца
                 return "Значение X";
+            case 1:
+                return "Значение многочлена";
+            case 2:
+                return "Значение многочлена(Float)";
             default:
-                //Значение второго столбца
-                return "Згачение многочлена";
+                return "Разница значений";
         }
     }
 
     public Class<?> getColumnClass(int col){
-        //И в первом и во втором столбце значения типа Double
-        return Double.class;
+        switch(col) {
+            case 2:
+                return Float.class;
+            default:
+                return Double.class;
+        }
     }
 
 }
